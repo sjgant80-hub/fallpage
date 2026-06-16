@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>◊ FallPage · sovereign multi-page layout · brochures · reports · invoices · Ω autopilot</title>
+<meta name="description" content="Sovereign InDesign wedge. Multi-page documents · A4 / Letter / Legal / business card · columns · master styles · headers, footers, page numbers · print to PDF. Single HTML, no server, no subscription.">
+<meta name="prime" content="457">
+<meta name="theme-color" content="#0b0a0f">
+<link rel="manifest" href='data:application/manifest+json,{"name":"FallPage","short_name":"page","start_url":"./","display":"standalone","background_color":"%230b0a0f","theme_color":"%23ff8c00","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27><rect width=%27192%27 height=%27192%27 fill=%27%230b0a0f%27 rx=%2828%27/><text x=%2796%27 y=%27130%27 font-family=%27Georgia, serif%27 font-size=%27108%27 font-weight=%27700%27 text-anchor=%27middle%27 fill=%27%23ff8c00%27>◊</text></svg>","sizes":"192x192","type":"image/svg+xml"}]}'>
+<style>
+:root{
+  --void:#0b0a0f;--void-2:#13121a;--ink:#1a1922;--ink-2:#22212c;
+  --line:#2a2934;--line-soft:#1f1e28;
+  --cream:#e6e1d6;--cream-dim:#a8a395;--cream-muted:#6e6a5e;
+  --brass:#b8974a;--amber:#ff8c00;--ox:#8b1a1a;
+  --green:#4ade80;--red:#ef4444;--blue:#60a5fa;--yellow:#fbbf24;
+  --paper:#fafaf6;--paper-edge:#dad6c8;--workspace:#1c1c24;
+  --serif:Georgia,'Libre Baskerville',ui-serif,serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',ui-monospace,Menlo,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--void);color:var(--cream);font:13px/1.55 var(--sans);min-height:100dvh;-webkit-font-smoothing:antialiased;overflow:hidden;height:100dvh}
+button{font-family:inherit;cursor:pointer;background:transparent;border:none;color:inherit}
+input,textarea,select{font-family:inherit;background:var(--ink);border:1px solid var(--line);color:var(--cream);border-radius:3px;padding:6px 9px;outline:none;font-size:12px;width:100%}
+input:focus,textarea:focus,select:focus{border-color:var(--brass)}
+input[type=color]{width:40px;height:24px;padding:0;border:1px solid var(--line);cursor:pointer;background:var(--ink)}
+input[type=file]{display:none}
+a{color:var(--amber);text-decoration:none}
+a:hover{text-decoration:underline}
+textarea{resize:vertical;min-height:60px;font-family:var(--mono);font-size:11px;line-height:1.5}
+
+.app{display:grid;grid-template-rows:42px 1fr;height:100dvh}
+header{display:flex;align-items:center;border-bottom:1px solid var(--line);background:var(--void-2);user-select:none}
+.brand{display:flex;align-items:center;gap:10px;padding:0 14px;height:100%;border-right:1px solid var(--line)}
+.brand .mark{width:22px;height:22px;background:linear-gradient(135deg,var(--brass),var(--amber));border-radius:4px;display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:13px;color:var(--void)}
+.brand .name{font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:0.02em}
+.brand .seal{font-family:var(--mono);font-size:9px;color:var(--cream-muted);letter-spacing:0.16em;text-transform:uppercase}
+
+.menu{display:flex;flex:1;height:100%;align-items:stretch;overflow:hidden}
+.menu button{padding:0 11px;font-size:12px;color:var(--cream-dim);height:100%;display:flex;align-items:center;gap:5px;letter-spacing:0.02em;white-space:nowrap}
+.menu button:hover{background:var(--ink);color:var(--cream)}
+.menu button.divider{border-right:1px solid var(--line-soft);padding:0;width:1px;cursor:default}
+.menu button:hover.divider{background:transparent}
+
+.tools-r{display:flex;align-items:center;gap:5px;padding:0 12px;height:100%;border-left:1px solid var(--line)}
+.tool-btn{padding:5px 10px;border-radius:3px;font-size:11px;color:var(--cream-dim);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--mono);border:1px solid var(--line)}
+.tool-btn:hover{background:var(--ink);color:var(--cream);border-color:var(--brass)}
+.tool-btn.primary{background:var(--amber);color:var(--void);border-color:var(--amber);font-weight:600}
+.tool-btn.primary:hover{background:var(--brass);border-color:var(--brass)}
+.tool-btn.t3{border-color:var(--blue);color:var(--blue)}
+
+.workspace{display:grid;grid-template-columns:140px 1fr 280px;height:calc(100dvh - 42px);min-height:0}
+@media(max-width:980px){.workspace{grid-template-columns:110px 1fr 240px}}
+@media(max-width:760px){.workspace{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.thumbs-pane{max-height:100px;flex-direction:row!important;overflow-x:auto}.panels{max-height:240px}}
+
+.thumbs-pane,.preview-pane,.panels{overflow:auto;display:flex;flex-direction:column;min-height:0}
+.thumbs-pane{background:var(--void-2);border-right:1px solid var(--line)}
+.preview-pane{background:var(--workspace);border-right:1px solid var(--line)}
+.panels{background:var(--void-2);border-left:1px solid var(--line)}
+
+.pane-hd{padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--brass);letter-spacing:0.14em;text-transform:uppercase;background:var(--ink);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--line)}
+.pane-hd .info{color:var(--cream-muted);font-size:10px}
+
+/* THUMBNAILS */
+.thumbs-list{padding:8px;display:flex;flex-direction:column;gap:8px;flex:1}
+.thumb{background:var(--paper);color:#222;border:2px solid transparent;border-radius:2px;position:relative;cursor:pointer;aspect-ratio:1/1.414;overflow:hidden;transition:border-color .15s;flex-shrink:0;min-width:90px;box-shadow:0 2px 6px rgba(0,0,0,0.4)}
+.thumb.land{aspect-ratio:1.414/1}
+.thumb.active{border-color:var(--amber)}
+.thumb:hover{border-color:var(--brass)}
+.thumb-mini{position:absolute;inset:0;padding:6px;font-size:4px;line-height:1.2;overflow:hidden;color:#333;font-family:Helvetica,sans-serif}
+.thumb-mini h1{font-size:7px;margin:0 0 2px}
+.thumb-mini h2{font-size:5px;margin:1px 0}
+.thumb-mini h3{font-size:4.5px;margin:1px 0}
+.thumb-mini p{margin:0 0 1px;font-size:3.5px;line-height:1.3}
+.thumb-mini .imgph{background:#d0c8b0;height:14px;margin:2px 0}
+.thumb-mini .div{border-top:0.5px solid #bbb;margin:2px 0}
+.thumb-num{position:absolute;bottom:2px;right:3px;font-family:var(--mono);font-size:8px;color:var(--cream);background:rgba(11,10,15,0.85);padding:1px 4px;border-radius:2px;letter-spacing:0.06em}
+.thumb-del{position:absolute;top:2px;right:2px;width:14px;height:14px;background:rgba(11,10,15,0.85);color:var(--red);border-radius:2px;display:none;align-items:center;justify-content:center;font-size:11px;line-height:1}
+.thumb:hover .thumb-del{display:flex}
+.thumbs-actions{padding:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+
+/* PREVIEW */
+.preview-bd{flex:1;overflow:auto;padding:30px 24px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.page{background:var(--paper);color:#222;box-shadow:0 8px 30px rgba(0,0,0,0.55),0 0 0 1px var(--paper-edge);position:relative;overflow:hidden}
+.page-inner{position:absolute;left:0;top:0;width:100%;height:100%}
+.page-content{position:absolute;font-family:Helvetica,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#222;column-gap:6mm;overflow:hidden}
+.page-content h1{font-size:24pt;margin:0 0 10pt;font-weight:600;color:#b8974a;font-family:Georgia,serif;break-after:avoid}
+.page-content h2{font-size:17pt;margin:14pt 0 8pt;font-weight:600;color:#b8974a;font-family:Georgia,serif;break-after:avoid}
+.page-content h3{font-size:13pt;margin:12pt 0 6pt;font-weight:600;color:#5a4a2a;font-family:Georgia,serif;break-after:avoid}
+.page-content p{margin:0 0 8pt}
+.page-content strong{font-weight:700}
+.page-content em{font-style:italic}
+.page-content ul,.page-content ol{margin:0 0 10pt 18pt}
+.page-content li{margin-bottom:3pt}
+.page-content img{max-width:100%;height:auto;display:block;margin:6pt auto;break-inside:avoid}
+.page-content hr{border:none;border-top:1px solid #ccc;margin:10pt 0}
+.page-content .pullquote{font-family:Georgia,serif;font-size:18pt;line-height:1.35;color:#b8974a;border-left:4px solid #b8974a;padding:6pt 0 6pt 12pt;margin:12pt 0;font-style:italic;break-inside:avoid}
+.page-content .spacer{display:block}
+.page-content .toc{break-inside:avoid}
+.page-content .toc-row{display:flex;justify-content:space-between;gap:6pt;padding:2pt 0;border-bottom:1px dotted #bbb;font-size:10pt}
+.page-content .toc-row.l2{padding-left:12pt}
+.page-content .toc-row.l3{padding-left:24pt;font-size:9pt;color:#555}
+.page-header,.page-footer{position:absolute;left:0;right:0;text-align:center;font-family:Helvetica,Arial,sans-serif;font-size:9pt;color:#888;padding:0 10mm}
+.page-header.outer-r{text-align:right}.page-header.outer-l{text-align:left}
+.page-footer.outer-r{text-align:right}.page-footer.outer-l{text-align:left}
+
+/* PANELS */
+.panel{border-bottom:1px solid var(--line)}
+.panel-bd{padding:11px 13px}
+.field{margin-bottom:9px}
+.field label{display:block;font-family:var(--mono);font-size:10px;color:var(--cream-muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px}
+
+.btn{padding:6px 11px;border:1px solid var(--brass);border-radius:3px;font-size:11px;color:var(--cream);background:transparent;letter-spacing:0.04em;display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn.primary{background:var(--amber);color:var(--void);border-color:var(--amber);font-weight:600}
+.btn.primary:hover{background:var(--brass);border-color:var(--brass)}
+.btn.full{width:100%}
+.btn.sm{padding:4px 8px;font-size:10px}
+.btn.line{border-color:var(--line)}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn.danger:hover{background:var(--red);color:var(--void)}
+
+/* BLOCK LIST */
+.block-list{display:flex;flex-direction:column;gap:5px}
+.block-item{background:var(--ink);border:1px solid var(--line);border-radius:3px;padding:7px 9px;display:flex;align-items:center;gap:6px;font-size:11px;cursor:grab}
+.block-item:hover{border-color:var(--brass)}
+.block-item.editing{border-color:var(--amber)}
+.block-item .b-type{font-family:var(--mono);font-size:9px;color:var(--brass);letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;width:38px}
+.block-item .b-prev{flex:1;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.block-item .b-acts{display:flex;gap:2px;flex-shrink:0}
+.block-item .b-acts button{padding:2px 5px;font-size:10px;color:var(--cream-muted);border-radius:2px}
+.block-item .b-acts button:hover{background:var(--void);color:var(--amber)}
+.block-edit{background:var(--void);border:1px solid var(--brass);border-radius:3px;padding:9px;margin-top:5px;display:none}
+.block-edit.open{display:block}
+.add-block-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}
+.add-block-row button{padding:5px;border:1px dashed var(--line);border-radius:3px;font-size:10px;color:var(--cream-muted);font-family:var(--mono);letter-spacing:0.04em;text-transform:uppercase}
+.add-block-row button:hover{border-color:var(--brass);color:var(--brass);border-style:solid}
+
+/* PALETTE + MODAL */
+.palette-bg,.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:flex-start;justify-content:center;padding-top:14vh;z-index:1000;backdrop-filter:blur(4px)}
+.palette-bg.open,.modal-bg.open{display:flex}
+.modal-bg{align-items:center;padding:18px}
+.palette{background:var(--void-2);border:1px solid var(--brass);border-radius:6px;width:min(640px,90%);box-shadow:0 18px 50px rgba(0,0,0,0.7);overflow:hidden}
+.palette-hd{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.palette-hd .glyph{font-family:var(--serif);font-size:20px;color:var(--amber)}
+.palette-hd input{flex:1;border:none;background:transparent;font-size:15px;padding:4px}
+.palette-hd .badge{font-family:var(--mono);font-size:10px;color:var(--cream-muted);letter-spacing:0.1em;text-transform:uppercase}
+.palette-bd{max-height:50vh;overflow:auto;padding:8px}
+.palette-row{padding:9px 12px;border-radius:3px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:13px}
+.palette-row:hover,.palette-row.sel{background:var(--ink)}
+.palette-row .ico{font-family:var(--serif);font-size:16px;color:var(--amber);width:22px;text-align:center}
+.palette-row .desc{color:var(--cream-muted);font-size:11px;margin-top:2px}
+.palette-row .key{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--cream-muted);background:var(--void);padding:2px 6px;border-radius:2px;letter-spacing:0.06em}
+.modal{background:var(--void-2);border:1px solid var(--brass);border-radius:5px;padding:22px;max-width:540px;width:100%;max-height:90vh;overflow:auto}
+.modal h2{font-family:var(--serif);font-size:17px;margin-bottom:14px}
+.modal h3{font-family:var(--mono);font-size:10px;color:var(--brass);letter-spacing:0.14em;text-transform:uppercase;margin:14px 0 6px}
+.modal .actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end}
+.docs-list{display:flex;flex-direction:column;gap:5px;margin:8px 0}
+.doc-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--ink);border:1px solid var(--line);border-radius:3px;font-size:12px}
+.doc-row:hover{border-color:var(--brass);cursor:pointer}
+.doc-row .meta{font-family:var(--mono);font-size:10px;color:var(--cream-muted)}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--amber);color:var(--void);padding:9px 18px;border-radius:3px;font-family:var(--mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;opacity:0;transition:all 0.22s;z-index:1100;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.print-root{display:none}
+
+/* PRINT */
+@media print {
+  body * { visibility: hidden; }
+  .print-root, .print-root * { visibility: visible; }
+  .print-root { display:block; position: absolute; left: 0; top: 0; width: 100%; }
+  .print-page { page-break-after: always; position:relative; overflow:hidden; background:white; }
+  .print-page:last-child { page-break-after: auto; }
+  @page { size: A4 portrait; margin: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+<header>
+  <div class="brand">
+    <div class="mark">◊</div>
+    <div><div class="name">FallPage</div></div>
+    <div class="seal">v1 · prime 457</div>
+  </div>
+  <nav class="menu">
+    <button onclick="newDoc()" title="new doc">+ new</button>
+    <button onclick="openModal('load')" title="load saved doc">⇪ load</button>
+    <button onclick="saveDoc()" title="save · Ctrl+S">⌂ save</button>
+    <button class="divider"></button>
+    <button onclick="addPage()" title="add page">+ page</button>
+    <button onclick="duplicatePage()" title="duplicate current page">⎘ dup</button>
+    <button class="divider"></button>
+    <button onclick="exportPDF()" style="color:var(--amber);font-weight:600" title="export PDF via print · ⌘E">↓ pdf</button>
+    <button onclick="exportJson()" title="export doc.json">↓ json</button>
+    <button onclick="importJsonClick()" title="import doc.json">⇪ json</button>
+    <input type="file" id="jsonFile" accept=".json,application/json" onchange="importJson(event)">
+  </nav>
+  <div class="tools-r">
+    <button class="tool-btn primary" onclick="openPalette()" title="Ω autopilot · Ctrl+K">◊ autopilot</button>
+    <button class="tool-btn" id="tierBadge" onclick="openModal('settings')">offline</button>
+    <button class="tool-btn" onclick="openModal('settings')">⚙</button>
+  </div>
+</header>
+
+<div class="workspace">
+
+<aside class="thumbs-pane">
+  <div class="pane-hd"><span>pages</span><span class="info" id="pageCount">·</span></div>
+  <div class="thumbs-list" id="thumbsList"></div>
+  <div class="thumbs-actions">
+    <button class="btn sm full" onclick="addPage()">+ add page</button>
+    <button class="btn sm full line" onclick="duplicatePage()">⎘ duplicate</button>
+  </div>
+</aside>
+
+<div class="preview-pane">
+  <div class="pane-hd"><span id="pgLabel">page 1</span><span class="info" id="zoomInfo">·</span></div>
+  <div class="preview-bd" id="preview"></div>
+</div>
+
+<aside class="panels" id="panels">
+  <section class="panel">
+    <div class="pane-hd"><span>page settings</span></div>
+    <div class="panel-bd">
+      <div class="field"><label>size</label><select id="pgSize" onchange="onDocChange()"><option value="A4">A4 · 210×297mm</option><option value="A5">A5 · 148×210mm</option><option value="Letter">Letter · 216×279mm</option><option value="Legal">Legal · 216×356mm</option><option value="card">business card · 90×55mm</option><option value="custom">custom</option></select></div>
+      <div class="row2" id="customDim" style="display:none">
+        <div class="field"><label>w (mm)</label><input id="pgW" type="number" value="210" oninput="onDocChange()"></div>
+        <div class="field"><label>h (mm)</label><input id="pgH" type="number" value="297" oninput="onDocChange()"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>orientation</label><select id="pgOri" onchange="onDocChange()"><option value="P">portrait</option><option value="L">landscape</option></select></div>
+        <div class="field"><label>columns</label><select id="pgCols" onchange="onDocChange()"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+      </div>
+      <div class="row4">
+        <div class="field"><label>mT</label><input id="mT" type="number" value="20" oninput="onDocChange()"></div>
+        <div class="field"><label>mB</label><input id="mB" type="number" value="20" oninput="onDocChange()"></div>
+        <div class="field"><label>mL</label><input id="mL" type="number" value="20" oninput="onDocChange()"></div>
+        <div class="field"><label>mR</label><input id="mR" type="number" value="20" oninput="onDocChange()"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="pane-hd"><span>blocks · page <span id="bpgN">1</span></span><button class="btn sm" onclick="addBlockMenu()" style="padding:2px 6px">+</button></div>
+    <div class="panel-bd">
+      <div class="block-list" id="blockList"></div>
+      <div class="add-block-row">
+        <button onclick="addBlock('heading')">+ heading</button>
+        <button onclick="addBlock('paragraph')">+ paragraph</button>
+        <button onclick="addBlock('image')">+ image</button>
+        <button onclick="addBlock('pullquote')">+ quote</button>
+        <button onclick="addBlock('columns')">+ col break</button>
+        <button onclick="addBlock('spacer')">+ spacer</button>
+        <button onclick="addBlock('divider')">+ divider</button>
+        <button onclick="addBlock('toc')">+ toc</button>
+      </div>
+      <div id="blockEdit" class="block-edit"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="pane-hd"><span>master styles</span></div>
+    <div class="panel-bd">
+      <div class="field"><label>document title</label><input id="docTitle" oninput="onDocChange()" placeholder="untitled"></div>
+      <div class="row2">
+        <div class="field"><label>body font</label><select id="msFont" onchange="onDocChange()"><option value="Helvetica,Arial,sans-serif">Helvetica</option><option value="Georgia,serif">Georgia</option><option value="'Times New Roman',serif">Times</option><option value="ui-serif,serif">system serif</option><option value="system-ui,sans-serif">system sans</option></select></div>
+        <div class="field"><label>body size pt</label><input id="msSize" type="number" value="11" oninput="onDocChange()"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>line height</label><input id="msLh" type="number" step="0.05" value="1.5" oninput="onDocChange()"></div>
+        <div class="field"><label>heading color</label><input id="msHC" type="color" value="#b8974a" oninput="onDocChange()"></div>
+      </div>
+      <div class="field"><label>page numbers</label><select id="msPN" onchange="onDocChange()"><option value="none">none</option><option value="center" selected>center</option><option value="outer">outer corner</option></select></div>
+      <div class="field"><label>running header</label><input id="msHdr" oninput="onDocChange()" placeholder="e.g. {{title}}"></div>
+      <div class="field"><label>running footer</label><input id="msFtr" oninput="onDocChange()" placeholder="e.g. page {{page}}"></div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--cream-muted);margin-top:4px">placeholders: {{page}} · {{title}} · {{total}}</div>
+    </div>
+  </section>
+</aside>
+
+</div></div>
+
+<!-- PALETTE -->
+<div class="palette-bg" id="palette" onclick="if(event.target===this)closePalette()">
+  <div class="palette">
+    <div class="palette-hd"><span class="glyph">Ω</span><input id="pInput" placeholder="template name · or describe a doc (T3) · e.g. brochure, invoice, report"><span class="badge" id="pTier">T0</span></div>
+    <div class="palette-bd" id="pBody"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- print root -->
+<div class="print-root" id="printRoot"></div>
+
+<script>
+const PRIME = 457;
+const VERSION = '1.0.0';
+
+// ============ STATE ============
+const state = {
+  doc: null,
+  curPage: 0,
+  editingBlock: null,
+  recent: [],
+  settings: {anthropicKey:'',openaiKey:'',geminiKey:'',openrouterKey:''},
+  db: null,
+  dirty: false
+};
+
+function newBlock(type, data){
+  const b = {id:'b'+Math.random().toString(36).slice(2,9),type,...data};
+  return b;
+}
+function blankPage(){return {id:'p'+Math.random().toString(36).slice(2,9), blocks:[]};}
+function blankDoc(){
+  return {
+    id: 'd'+Date.now().toString(36),
+    title: 'untitled',
+    created: Date.now(),
+    pageSize: 'A4',
+    customW: 210, customH: 297,
+    orientation: 'P',
+    columns: 1,
+    margins: {t:20,b:20,l:20,r:20},
+    masterStyles: {
+      font: 'Helvetica,Arial,sans-serif',
+      size: 11,
+      lineHeight: 1.5,
+      headingColor: '#b8974a',
+      pageNumbers: 'center',
+      header: '',
+      footer: ''
+    },
+    pages: [blankPage()]
+  };
+}
+
+// ============ INDEXEDDB ============
+function openDb(){
+  return new Promise((res,rej)=>{
+    const r = indexedDB.open('fallpage', 1);
+    r.onupgradeneeded = e => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains('docs')) db.createObjectStore('docs',{keyPath:'id'});
+      if(!db.objectStoreNames.contains('kv')) db.createObjectStore('kv');
+    };
+    r.onsuccess = e => res(e.target.result);
+    r.onerror = e => rej(e);
+  });
+}
+function dbPut(store,val,key){
+  return new Promise((res,rej)=>{
+    const tx = state.db.transaction(store,'readwrite');
+    const s = tx.objectStore(store);
+    const r = key!==undefined ? s.put(val,key) : s.put(val);
+    r.onsuccess = ()=>res(); r.onerror=e=>rej(e);
+  });
+}
+function dbGet(store,key){
+  return new Promise((res,rej)=>{
+    const tx = state.db.transaction(store,'readonly');
+    const r = tx.objectStore(store).get(key);
+    r.onsuccess = ()=>res(r.result); r.onerror=e=>rej(e);
+  });
+}
+function dbAll(store){
+  return new Promise((res,rej)=>{
+    const tx = state.db.transaction(store,'readonly');
+    const r = tx.objectStore(store).getAll();
+    r.onsuccess = ()=>res(r.result); r.onerror=e=>rej(e);
+  });
+}
+function dbDel(store,key){
+  return new Promise((res,rej)=>{
+    const tx = state.db.transaction(store,'readwrite');
+    const r = tx.objectStore(store).delete(key);
+    r.onsuccess = ()=>res(); r.onerror=e=>rej(e);
+  });
+}
+
+async function saveDoc(silent){
+  if(!state.doc) return;
+  state.doc.modified = Date.now();
+  try{
+    await dbPut('docs', state.doc);
+    await dbPut('kv', state.doc.id, 'last');
+    await dbPut('kv', state.settings, 'settings');
+    state.dirty = false;
+    if(!silent) toast('saved');
+  }catch(e){console.error(e);toast('save failed');}
+}
+let saveTimer=null;
+function scheduleSave(){
+  state.dirty = true;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>saveDoc(true), 800);
+}
+
+async function loadLast(){
+  try{
+    const lastId = await dbGet('kv','last');
+    const s = await dbGet('kv','settings');
+    if(s) state.settings = {...state.settings, ...s};
+    if(lastId){
+      const d = await dbGet('docs', lastId);
+      if(d){ state.doc = d; return; }
+    }
+  }catch(e){console.error(e);}
+  state.doc = blankDoc();
+}
+
+// ============ PAGE DIMENSIONS ============
+const PAGE_SIZES = {
+  A4: [210,297], A5:[148,210], Letter:[216,279], Legal:[216,356], card:[90,55]
+};
+function pageDims(d){
+  let w,h;
+  if(d.pageSize==='custom'){ w=d.customW; h=d.customH; }
+  else { [w,h] = PAGE_SIZES[d.pageSize] || PAGE_SIZES.A4; }
+  if(d.orientation==='L') [w,h]=[h,w];
+  return {w,h};
+}
+
+// ============ RENDER ============
+function md2html(s){
+  if(!s) return '';
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+  s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2">$1</a>');
+  s = s.split(/\n{2,}/).map(p=>{
+    if(/^[-*] /.test(p)){
+      const items = p.split('\n').filter(l=>/^[-*] /.test(l)).map(l=>'<li>'+l.replace(/^[-*] /,'')+'</li>').join('');
+      return '<ul>'+items+'</ul>';
+    }
+    if(/^\d+\. /.test(p)){
+      const items = p.split('\n').filter(l=>/^\d+\. /.test(l)).map(l=>'<li>'+l.replace(/^\d+\. /,'')+'</li>').join('');
+      return '<ol>'+items+'</ol>';
+    }
+    return '<p>'+p.replace(/\n/g,'<br>')+'</p>';
+  }).join('');
+  return s;
+}
+
+function fillPlaceholders(s, pageIdx, doc){
+  if(!s) return '';
+  return s.replace(/\{\{page\}\}/g, pageIdx+1)
+          .replace(/\{\{total\}\}/g, doc.pages.length)
+          .replace(/\{\{title\}\}/g, doc.title||'');
+}
+
+function renderPageContent(page, pageIdx, doc, forPrint){
+  // Build the inner HTML for one .page-content area
+  const m = doc.margins;
+  const ms = doc.masterStyles;
+  const cols = doc.columns;
+  let html = '';
+  // Detect column-break splits
+  const segments = [[]];
+  for(const b of page.blocks){
+    if(b.type==='columns'){
+      segments.push([]);
+    } else {
+      segments[segments.length-1].push(b);
+    }
+  }
+  // If cols>1 we use CSS multi-column; the 'columns' break block becomes a forced break.
+  let blocksHtml = '';
+  page.blocks.forEach(b=>{
+    blocksHtml += renderBlock(b, doc);
+  });
+  // build content wrapper with column count
+  const styleParts = [
+    `top:${m.t}mm`,`left:${m.l}mm`,`right:${m.r}mm`,`bottom:${m.b}mm`,
+    `font-family:${ms.font}`,`font-size:${ms.size}pt`,`line-height:${ms.lineHeight}`,
+    cols>1 ? `column-count:${cols}` : '',
+    cols>1 ? `column-gap:6mm` : ''
+  ].filter(Boolean).join(';');
+  const headingStyle = `--hc:${ms.headingColor}`;
+  let inner = `<div class="page-content" style="${styleParts}">${blocksHtml}</div>`;
+  // header/footer
+  const pnPos = ms.pageNumbers;
+  const pageNum = pageIdx+1;
+  const hdrTxt = fillPlaceholders(ms.header, pageIdx, doc);
+  const ftrTxt = fillPlaceholders(ms.footer, pageIdx, doc);
+  if(hdrTxt){
+    inner += `<div class="page-header" style="top:6mm">${escapeHtml(hdrTxt)}</div>`;
+  }
+  if(ftrTxt){
+    inner += `<div class="page-footer" style="bottom:6mm">${escapeHtml(ftrTxt)}</div>`;
+  }
+  if(pnPos!=='none'){
+    const cls = pnPos==='outer' ? (pageIdx%2===0?'outer-r':'outer-l') : '';
+    inner += `<div class="page-footer ${cls}" style="bottom:${ftrTxt?12:6}mm">${pageNum}</div>`;
+  }
+  // apply heading color via inline style replacements
+  inner = inner.replace(/<h1>/g, `<h1 style="color:${ms.headingColor}">`)
+               .replace(/<h2>/g, `<h2 style="color:${ms.headingColor}">`);
+  return inner;
+}
+
+function escapeHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderBlock(b, doc){
+  switch(b.type){
+    case 'heading': {
+      const lv = b.level||1;
+      return `<h${lv}>${escapeHtml(b.text||'')}</h${lv}>`;
+    }
+    case 'paragraph': return md2html(b.text||'');
+    case 'image': {
+      if(!b.src) return '<p style="color:#aaa;font-style:italic">[image]</p>';
+      const w = b.width ? ` style="max-width:${b.width}mm"` : '';
+      return `<img src="${b.src}"${w} alt="">`;
+    }
+    case 'pullquote': return `<div class="pullquote">${escapeHtml(b.text||'')}</div>`;
+    case 'columns': return `<div style="break-after:column"></div>`;
+    case 'spacer': return `<div class="spacer" style="height:${b.height||10}mm"></div>`;
+    case 'divider': return `<hr>`;
+    case 'toc': return renderToc(doc);
+    default: return '';
+  }
+}
+
+function renderToc(doc){
+  let rows = '';
+  doc.pages.forEach((p,i)=>{
+    p.blocks.forEach(b=>{
+      if(b.type==='heading' && b.text){
+        const lv = b.level||1;
+        rows += `<div class="toc-row l${lv}"><span>${escapeHtml(b.text)}</span><span>${i+1}</span></div>`;
+      }
+    });
+  });
+  return `<div class="toc">${rows||'<p style="color:#999;font-style:italic">no headings yet</p>'}</div>`;
+}
+
+// ============ PREVIEW RENDER ============
+function renderPreview(){
+  const d = state.doc;
+  if(!d) return;
+  const {w,h} = pageDims(d);
+  const pane = document.getElementById('preview');
+  const paneW = pane.clientWidth - 60;
+  const paneH = pane.clientHeight - 60;
+  const pxPerMm = 3.78; // 96dpi
+  const fullW = w*pxPerMm, fullH = h*pxPerMm;
+  let scale = Math.min(paneW/fullW, paneH/fullH, 1);
+  if(scale<0.2) scale=0.2;
+  document.getElementById('zoomInfo').textContent = `${w}×${h}mm · ${Math.round(scale*100)}%`;
+  document.getElementById('pgLabel').textContent = `page ${state.curPage+1} of ${d.pages.length}`;
+  const page = d.pages[state.curPage];
+  if(!page){state.curPage=0;}
+  const cur = d.pages[state.curPage];
+  pane.innerHTML = `<div class="page" style="width:${fullW*scale}px;height:${fullH*scale}px"><div class="page-inner" style="width:${fullW}px;height:${fullH}px;transform:scale(${scale});transform-origin:top left">${renderPageContent(cur, state.curPage, d)}</div></div>`;
+}
+
+function renderThumbs(){
+  const d = state.doc; if(!d) return;
+  const {w,h} = pageDims(d);
+  const list = document.getElementById('thumbsList');
+  const landscape = w>h;
+  let html = '';
+  d.pages.forEach((p,i)=>{
+    let mini = '';
+    p.blocks.slice(0,8).forEach(b=>{
+      if(b.type==='heading') mini += `<h${b.level||1}>${escapeHtml((b.text||'').slice(0,30))}</h${b.level||1}>`;
+      else if(b.type==='paragraph') mini += `<p>${escapeHtml((b.text||'').slice(0,80))}</p>`;
+      else if(b.type==='pullquote') mini += `<p style="color:#b8974a">${escapeHtml((b.text||'').slice(0,40))}</p>`;
+      else if(b.type==='image') mini += `<div class="imgph"></div>`;
+      else if(b.type==='divider') mini += `<div class="div"></div>`;
+      else if(b.type==='toc') mini += `<p style="color:#888">[toc]</p>`;
+    });
+    html += `<div class="thumb ${landscape?'land':''} ${i===state.curPage?'active':''}" onclick="setPage(${i})" draggable="true" data-idx="${i}">
+      <div class="thumb-mini">${mini || '<p style="color:#aaa;font-style:italic">empty</p>'}</div>
+      <div class="thumb-num">${i+1}</div>
+      ${d.pages.length>1 ? `<div class="thumb-del" onclick="event.stopPropagation();delPage(${i})">×</div>` : ''}
+    </div>`;
+  });
+  list.innerHTML = html;
+  document.getElementById('pageCount').textContent = d.pages.length + (d.pages.length===1?' page':' pages');
+  // drag-to-reorder
+  list.querySelectorAll('.thumb').forEach(el=>{
+    el.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', el.dataset.idx); });
+    el.addEventListener('dragover', e=>{ e.preventDefault(); el.style.outline='2px dashed var(--amber)'; });
+    el.addEventListener('dragleave', ()=>{ el.style.outline=''; });
+    el.addEventListener('drop', e=>{
+      e.preventDefault(); el.style.outline='';
+      const from = +e.dataTransfer.getData('text/plain');
+      const to = +el.dataset.idx;
+      if(from===to) return;
+      const moved = state.doc.pages.splice(from,1)[0];
+      state.doc.pages.splice(to,0,moved);
+      state.curPage = to;
+      renderAll(); scheduleSave();
+    });
+  });
+}
+
+function renderBlockList(){
+  const d = state.doc;
+  const page = d.pages[state.curPage];
+  if(!page){ document.getElementById('blockList').innerHTML=''; return; }
+  document.getElementById('bpgN').textContent = state.curPage+1;
+  let html = '';
+  page.blocks.forEach((b,i)=>{
+    let prev = '';
+    if(b.type==='heading') prev = 'H'+(b.level||1)+' · '+(b.text||'');
+    else if(b.type==='paragraph') prev = (b.text||'').slice(0,40);
+    else if(b.type==='pullquote') prev = '"'+(b.text||'').slice(0,30)+'"';
+    else if(b.type==='image') prev = b.src ? '['+(b.width||'auto')+'mm]' : '[no image]';
+    else if(b.type==='spacer') prev = (b.height||10)+'mm';
+    else if(b.type==='columns') prev = 'force column break';
+    else if(b.type==='divider') prev = '———';
+    else if(b.type==='toc') prev = 'auto from headings';
+    html += `<div class="block-item ${state.editingBlock===b.id?'editing':''}" onclick="editBlock('${b.id}')">
+      <span class="b-type">${b.type.slice(0,4)}</span>
+      <span class="b-prev">${escapeHtml(prev)}</span>
+      <span class="b-acts">
+        <button onclick="event.stopPropagation();moveBlock(${i},-1)" title="up">↑</button>
+        <button onclick="event.stopPropagation();moveBlock(${i},1)" title="down">↓</button>
+        <button onclick="event.stopPropagation();delBlock(${i})" title="delete">×</button>
+      </span>
+    </div>`;
+  });
+  document.getElementById('blockList').innerHTML = html;
+  renderBlockEdit();
+}
+
+function renderBlockEdit(){
+  const e = document.getElementById('blockEdit');
+  if(!state.editingBlock){ e.classList.remove('open'); e.innerHTML=''; return; }
+  const page = state.doc.pages[state.curPage];
+  const b = page.blocks.find(x=>x.id===state.editingBlock);
+  if(!b){ e.classList.remove('open'); return; }
+  let html = `<div style="font-family:var(--mono);font-size:9px;color:var(--brass);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:7px">edit · ${b.type}</div>`;
+  if(b.type==='heading'){
+    html += `<div class="field"><label>level</label><select onchange="updBlock('${b.id}','level',+this.value)">
+      <option value="1" ${b.level===1?'selected':''}>H1</option>
+      <option value="2" ${b.level===2?'selected':''}>H2</option>
+      <option value="3" ${b.level===3?'selected':''}>H3</option></select></div>`;
+    html += `<div class="field"><label>text</label><input value="${escapeHtml(b.text||'')}" oninput="updBlock('${b.id}','text',this.value)"></div>`;
+  } else if(b.type==='paragraph'){
+    html += `<div class="field"><label>text (markdown)</label><textarea oninput="updBlock('${b.id}','text',this.value)">${escapeHtml(b.text||'')}</textarea></div>`;
+  } else if(b.type==='pullquote'){
+    html += `<div class="field"><label>quote</label><textarea oninput="updBlock('${b.id}','text',this.value)">${escapeHtml(b.text||'')}</textarea></div>`;
+  } else if(b.type==='image'){
+    html += `<div class="field"><label>file</label><input type="file" accept="image/*" id="imgUpl_${b.id}" onchange="loadImageFor('${b.id}',event)" style="display:block"></div>`;
+    html += `<div class="field"><label>width (mm, blank=auto)</label><input type="number" value="${b.width||''}" oninput="updBlock('${b.id}','width',this.value?+this.value:null)"></div>`;
+    if(b.src) html += `<div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-top:4px">✓ image loaded</div>`;
+  } else if(b.type==='spacer'){
+    html += `<div class="field"><label>height (mm)</label><input type="number" value="${b.height||10}" oninput="updBlock('${b.id}','height',+this.value)"></div>`;
+  } else if(b.type==='columns'){
+    html += `<div style="font-size:11px;color:var(--cream-muted)">Forces the next blocks into the next column (when this page has 2 or 3 columns).</div>`;
+  } else if(b.type==='divider'){
+    html += `<div style="font-size:11px;color:var(--cream-muted)">Horizontal rule. No options.</div>`;
+  } else if(b.type==='toc'){
+    html += `<div style="font-size:11px;color:var(--cream-muted)">Auto-generated from all H1/H2/H3 headings across the document.</div>`;
+  }
+  html += `<div style="margin-top:8px;display:flex;gap:5px"><button class="btn sm" onclick="state.editingBlock=null;renderAll()">close</button></div>`;
+  e.innerHTML = html;
+  e.classList.add('open');
+}
+
+function loadImageFor(bid, ev){
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    updBlock(bid, 'src', e.target.result);
+  };
+  r.readAsDataURL(f);
+}
+
+function updBlock(bid, key, val){
+  const page = state.doc.pages[state.curPage];
+  const b = page.blocks.find(x=>x.id===bid);
+  if(!b) return;
+  b[key] = val;
+  renderPreview(); renderThumbs(); renderBlockList(); scheduleSave();
+}
+
+function moveBlock(i, dir){
+  const page = state.doc.pages[state.curPage];
+  const j = i+dir;
+  if(j<0||j>=page.blocks.length) return;
+  [page.blocks[i], page.blocks[j]] = [page.blocks[j], page.blocks[i]];
+  renderAll(); scheduleSave();
+}
+
+function delBlock(i){
+  const page = state.doc.pages[state.curPage];
+  page.blocks.splice(i,1);
+  state.editingBlock = null;
+  renderAll(); scheduleSave();
+}
+
+function addBlock(type){
+  const page = state.doc.pages[state.curPage];
+  let b;
+  if(type==='heading') b = newBlock('heading', {level:2, text:'Heading'});
+  else if(type==='paragraph') b = newBlock('paragraph', {text:'New paragraph. Supports **bold**, *italic*, `code`.'});
+  else if(type==='image') b = newBlock('image', {src:null, width:null});
+  else if(type==='pullquote') b = newBlock('pullquote', {text:'A pulled quote.'});
+  else if(type==='columns') b = newBlock('columns', {});
+  else if(type==='spacer') b = newBlock('spacer', {height:10});
+  else if(type==='divider') b = newBlock('divider', {});
+  else if(type==='toc') b = newBlock('toc', {});
+  page.blocks.push(b);
+  state.editingBlock = b.id;
+  renderAll(); scheduleSave();
+}
+
+function addBlockMenu(){
+  // simple cycle: pick the next sensible block by showing toast
+  addBlock('paragraph');
+}
+
+function editBlock(bid){
+  state.editingBlock = state.editingBlock===bid ? null : bid;
+  renderBlockList();
+}
+
+// ============ PAGES ============
+function setPage(i){
+  state.curPage = i;
+  state.editingBlock = null;
+  renderAll();
+}
+function addPage(){
+  state.doc.pages.push(blankPage());
+  state.curPage = state.doc.pages.length-1;
+  renderAll(); scheduleSave();
+  toast('page added');
+}
+function duplicatePage(){
+  const p = state.doc.pages[state.curPage];
+  const clone = JSON.parse(JSON.stringify(p));
+  clone.id = 'p'+Math.random().toString(36).slice(2,9);
+  clone.blocks.forEach(b=> b.id='b'+Math.random().toString(36).slice(2,9));
+  state.doc.pages.splice(state.curPage+1, 0, clone);
+  state.curPage++;
+  renderAll(); scheduleSave();
+  toast('page duplicated');
+}
+function delPage(i){
+  if(state.doc.pages.length<=1){ toast('cant delete last page'); return; }
+  if(!confirm('Delete page '+(i+1)+'?')) return;
+  state.doc.pages.splice(i,1);
+  if(state.curPage>=state.doc.pages.length) state.curPage = state.doc.pages.length-1;
+  renderAll(); scheduleSave();
+}
+
+// ============ DOC SETTINGS ============
+function readDocSettings(){
+  const d = state.doc;
+  d.title = document.getElementById('docTitle').value || 'untitled';
+  d.pageSize = document.getElementById('pgSize').value;
+  d.customW = +document.getElementById('pgW').value || 210;
+  d.customH = +document.getElementById('pgH').value || 297;
+  d.orientation = document.getElementById('pgOri').value;
+  d.columns = +document.getElementById('pgCols').value;
+  d.margins.t = +document.getElementById('mT').value || 0;
+  d.margins.b = +document.getElementById('mB').value || 0;
+  d.margins.l = +document.getElementById('mL').value || 0;
+  d.margins.r = +document.getElementById('mR').value || 0;
+  d.masterStyles.font = document.getElementById('msFont').value;
+  d.masterStyles.size = +document.getElementById('msSize').value || 11;
+  d.masterStyles.lineHeight = +document.getElementById('msLh').value || 1.5;
+  d.masterStyles.headingColor = document.getElementById('msHC').value;
+  d.masterStyles.pageNumbers = document.getElementById('msPN').value;
+  d.masterStyles.header = document.getElementById('msHdr').value;
+  d.masterStyles.footer = document.getElementById('msFtr').value;
+  document.getElementById('customDim').style.display = d.pageSize==='custom'?'grid':'none';
+}
+function writeDocSettings(){
+  const d = state.doc;
+  document.getElementById('docTitle').value = d.title||'';
+  document.getElementById('pgSize').value = d.pageSize;
+  document.getElementById('pgW').value = d.customW;
+  document.getElementById('pgH').value = d.customH;
+  document.getElementById('pgOri').value = d.orientation;
+  document.getElementById('pgCols').value = d.columns;
+  document.getElementById('mT').value = d.margins.t;
+  document.getElementById('mB').value = d.margins.b;
+  document.getElementById('mL').value = d.margins.l;
+  document.getElementById('mR').value = d.margins.r;
+  document.getElementById('msFont').value = d.masterStyles.font;
+  document.getElementById('msSize').value = d.masterStyles.size;
+  document.getElementById('msLh').value = d.masterStyles.lineHeight;
+  document.getElementById('msHC').value = d.masterStyles.headingColor;
+  document.getElementById('msPN').value = d.masterStyles.pageNumbers;
+  document.getElementById('msHdr').value = d.masterStyles.header;
+  document.getElementById('msFtr').value = d.masterStyles.footer;
+  document.getElementById('customDim').style.display = d.pageSize==='custom'?'grid':'none';
+}
+
+function onDocChange(){
+  readDocSettings();
+  renderPreview(); renderThumbs(); scheduleSave();
+}
+
+function renderAll(){
+  writeDocSettings();
+  renderPreview();
+  renderThumbs();
+  renderBlockList();
+}
+
+// ============ NEW / SAVE / LOAD ============
+function newDoc(){
+  if(state.dirty && !confirm('Unsaved changes. New doc anyway?')) return;
+  state.doc = blankDoc();
+  state.curPage = 0;
+  state.editingBlock = null;
+  renderAll(); saveDoc(true);
+  toast('new doc');
+}
+
+async function openLoadModal(){
+  const all = await dbAll('docs');
+  all.sort((a,b)=> (b.modified||0)-(a.modified||0));
+  let html = `<h2>Load doc</h2>`;
+  if(all.length===0){
+    html += `<p style="color:var(--cream-muted)">No saved docs yet.</p>`;
+  } else {
+    html += `<div class="docs-list">`;
+    all.forEach(d=>{
+      const dt = new Date(d.modified||d.created||0).toISOString().slice(0,16).replace('T',' ');
+      html += `<div class="doc-row" onclick="loadDocById('${d.id}')">
+        <div><div>${escapeHtml(d.title||'untitled')}</div><div class="meta">${d.pages.length}pg · ${d.pageSize}</div></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="meta">${dt}</span>
+          <button class="btn sm danger" onclick="event.stopPropagation();delDoc('${d.id}')">×</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `<div class="actions"><button class="btn" onclick="closeModal()">close</button></div>`;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+
+async function loadDocById(id){
+  const d = await dbGet('docs', id);
+  if(d){ state.doc = d; state.curPage=0; state.editingBlock=null; renderAll(); saveDoc(true); closeModal(); toast('loaded'); }
+}
+async function delDoc(id){
+  if(!confirm('Delete this doc?')) return;
+  await dbDel('docs', id);
+  openLoadModal();
+}
+
+function exportJson(){
+  const blob = new Blob([JSON.stringify(state.doc,null,2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (state.doc.title||'doc').replace(/[^\w]+/g,'-')+'.fallpage.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('json exported');
+}
+function importJsonClick(){ document.getElementById('jsonFile').click(); }
+function importJson(ev){
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try{
+      const d = JSON.parse(e.target.result);
+      if(!d.pages || !Array.isArray(d.pages)) throw new Error('bad doc');
+      d.id = 'd'+Date.now().toString(36);
+      state.doc = d; state.curPage=0; state.editingBlock=null;
+      renderAll(); saveDoc(true);
+      toast('imported');
+    }catch(err){ toast('invalid json'); }
+  };
+  r.readAsText(f);
+  ev.target.value = '';
+}
+
+// ============ PRINT / PDF ============
+function exportPDF(){
+  buildPrintRoot();
+  // dynamic @page injection
+  const d = state.doc;
+  const {w,h} = pageDims(d);
+  const oldStyle = document.getElementById('printPageStyle');
+  if(oldStyle) oldStyle.remove();
+  const st = document.createElement('style');
+  st.id = 'printPageStyle';
+  st.textContent = `@media print { @page { size: ${w}mm ${h}mm; margin: 0; } .print-page { width:${w}mm; height:${h}mm; } }`;
+  document.head.appendChild(st);
+  setTimeout(()=> window.print(), 80);
+}
+
+function buildPrintRoot(){
+  const d = state.doc;
+  const {w,h} = pageDims(d);
+  const root = document.getElementById('printRoot');
+  let html = '';
+  d.pages.forEach((p, i)=>{
+    html += `<div class="print-page" style="width:${w}mm;height:${h}mm;position:relative;overflow:hidden">${renderPageContent(p, i, d)}</div>`;
+  });
+  root.innerHTML = html;
+}
+
+// ============ CASCADE ============
+const Cascade={
+  async detectTier(){if(await this._probe())return'T2';const s=state.settings;if(s.anthropicKey||s.openaiKey||s.geminiKey||s.openrouterKey)return'T3';return'T0'},
+  async _probe(){if(this._p!==undefined)return this._p;try{this._p=await Promise.race([fetch('http://127.0.0.1:11434/api/tags').then(r=>r.ok),new Promise(r=>setTimeout(()=>r(false),350))])}catch(e){this._p=false}return this._p},
+  async generate(sys,user,maxTok){const s=state.settings,max=maxTok||1200;
+    if(s.anthropicKey)try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':s.anthropicKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:max,system:sys,messages:[{role:'user',content:user}]})});const d=await r.json();return{tier:'T3·Claude',text:d?.content?.[0]?.text||''}}catch(e){}
+    if(s.geminiKey)try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${s.geminiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents:[{parts:[{text:user}]}]})});const d=await r.json();return{tier:'T3·Gemini',text:d?.candidates?.[0]?.content?.parts?.[0]?.text||''}}catch(e){}
+    if(s.openaiKey)try{const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.openaiKey},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'system',content:sys},{role:'user',content:user}]})});const d=await r.json();return{tier:'T3·GPT',text:d?.choices?.[0]?.message?.content||''}}catch(e){}
+    if(s.openrouterKey)try{const r=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.openrouterKey,'HTTP-Referer':location.origin},body:JSON.stringify({model:'anthropic/claude-haiku-4-5',messages:[{role:'system',content:sys},{role:'user',content:user}]})});const d=await r.json();return{tier:'T3·OpenRouter',text:d?.choices?.[0]?.message?.content||''}}catch(e){}
+    return{tier:'T0',text:null}
+  }
+};
+async function updateTierBadge(){const t=await Cascade.detectTier();const el=document.getElementById('tierBadge');if(el){el.textContent=t==='T0'?'offline':t;el.classList.toggle('t3',t!=='T0')}}
+
+// ============ TEMPLATES ============
+const TEMPLATES = {
+  brochure: {
+    title: 'Company brochure',
+    pageSize:'A4', orientation:'P', columns:2,
+    margins:{t:18,b:18,l:18,r:18},
+    masterStyles:{font:'Helvetica,Arial,sans-serif',size:10,lineHeight:1.5,headingColor:'#b8974a',pageNumbers:'outer',header:'{{title}}',footer:''},
+    pages:[
+      {blocks:[
+        {type:'heading',level:1,text:'Welcome'},
+        {type:'paragraph',text:'A short opening paragraph that introduces who you are and what you do. Replace this with your own copy.'},
+        {type:'pullquote',text:'A single line that captures the brand promise.'},
+        {type:'paragraph',text:'Continue the narrative across columns. The two-column layout flows naturally — text wraps from one column to the next.'},
+        {type:'columns'},
+        {type:'heading',level:2,text:'What we make'},
+        {type:'paragraph',text:'Describe your offering. Keep it tight. Two columns punish padding.'},
+      ]},
+      {blocks:[
+        {type:'heading',level:1,text:'How it works'},
+        {type:'paragraph',text:'Walk the reader through your process in plain language.'},
+        {type:'divider'},
+        {type:'heading',level:2,text:'Step one'},
+        {type:'paragraph',text:'Detail.'},
+        {type:'heading',level:2,text:'Step two'},
+        {type:'paragraph',text:'Detail.'},
+      ]},
+      {blocks:[
+        {type:'heading',level:1,text:'Get in touch'},
+        {type:'paragraph',text:'hello@example.com\n+44 0000 000000\nexample.com'},
+      ]}
+    ]
+  },
+  onepager: {
+    title: 'One-pager',
+    pageSize:'A4', orientation:'P', columns:1,
+    margins:{t:24,b:24,l:24,r:24},
+    masterStyles:{font:'Helvetica,Arial,sans-serif',size:11,lineHeight:1.55,headingColor:'#b8974a',pageNumbers:'none',header:'',footer:'{{title}}'},
+    pages:[{blocks:[
+      {type:'heading',level:1,text:'Hero headline goes here'},
+      {type:'paragraph',text:'A single tight paragraph that frames the problem and the answer. One page. No filler.'},
+      {type:'divider'},
+      {type:'heading',level:2,text:'Body'},
+      {type:'paragraph',text:'Three to five short paragraphs. Each one earns its rent.'},
+      {type:'paragraph',text:'Keep cadence varied — short, then long. Reader should feel pulled forward.'},
+      {type:'pullquote',text:'The proof line goes here.'},
+      {type:'paragraph',text:'Close.'}
+    ]}]
+  },
+  report: {
+    title: 'Quarterly report',
+    pageSize:'A4', orientation:'P', columns:1,
+    margins:{t:25,b:25,l:25,r:25},
+    masterStyles:{font:'Georgia,serif',size:11,lineHeight:1.6,headingColor:'#b8974a',pageNumbers:'outer',header:'{{title}}',footer:''},
+    pages:[
+      {blocks:[
+        {type:'spacer',height:60},
+        {type:'heading',level:1,text:'Quarterly report'},
+        {type:'heading',level:3,text:'Q4 2026'},
+        {type:'spacer',height:120},
+        {type:'paragraph',text:'Author · date · classification'}
+      ]},
+      {blocks:[
+        {type:'heading',level:1,text:'Contents'},
+        {type:'toc'}
+      ]},
+      {blocks:[
+        {type:'heading',level:1,text:'Executive summary'},
+        {type:'paragraph',text:'Top-line numbers and the one thing that mattered.'},
+        {type:'heading',level:2,text:'Headline result'},
+        {type:'paragraph',text:'Detail.'},
+        {type:'heading',level:2,text:'Risks'},
+        {type:'paragraph',text:'Detail.'}
+      ]},
+      {blocks:[
+        {type:'heading',level:1,text:'Appendix'},
+        {type:'heading',level:2,text:'Methodology'},
+        {type:'paragraph',text:'How figures were derived.'},
+        {type:'divider'},
+        {type:'paragraph',text:'References, notes, definitions.'}
+      ]}
+    ]
+  },
+  invoice: {
+    title: 'Invoice',
+    pageSize:'A4', orientation:'P', columns:1,
+    margins:{t:20,b:20,l:22,r:22},
+    masterStyles:{font:'Helvetica,Arial,sans-serif',size:10,lineHeight:1.45,headingColor:'#b8974a',pageNumbers:'none',header:'',footer:'invoice {{title}}'},
+    pages:[{blocks:[
+      {type:'heading',level:1,text:'Invoice'},
+      {type:'paragraph',text:'**From** · Your Name · your@email.com\n**To** · Client Name · client@email.com'},
+      {type:'paragraph',text:'**Invoice #** INV-0001 · **Date** 2026-06-16 · **Due** 2026-07-16'},
+      {type:'divider'},
+      {type:'heading',level:3,text:'Line items'},
+      {type:'paragraph',text:'| Item | Qty | Rate | Total |\n|---|---|---|---|\n| Description of work | 1 | £500 | £500 |\n| Second line item | 4 | £125 | £500 |'},
+      {type:'paragraph',text:'**Subtotal** £1,000\n**VAT (20%)** £200\n**Total due** £1,200'},
+      {type:'divider'},
+      {type:'paragraph',text:'Payable by bank transfer to *Account · Sort 00-00-00 · No. 00000000*. Thank you.'}
+    ]}]
+  },
+  productsheet: {
+    title: 'Product sheet',
+    pageSize:'A4', orientation:'P', columns:2,
+    margins:{t:20,b:20,l:20,r:20},
+    masterStyles:{font:'Helvetica,Arial,sans-serif',size:10,lineHeight:1.5,headingColor:'#b8974a',pageNumbers:'none',header:'{{title}}',footer:''},
+    pages:[{blocks:[
+      {type:'heading',level:1,text:'Product name'},
+      {type:'paragraph',text:'Short tagline · one sentence that says what it is and who it is for.'},
+      {type:'image',src:null,width:80},
+      {type:'paragraph',text:'Add an image of the product on the left column.'},
+      {type:'columns'},
+      {type:'heading',level:2,text:'Specifications'},
+      {type:'paragraph',text:'- Dimension · 000 × 000 mm\n- Weight · 000 g\n- Material · ...\n- Colour · ...\n- Power · ...\n- Warranty · 1 year'},
+      {type:'heading',level:3,text:'Pricing'},
+      {type:'paragraph',text:'**£000** · ex VAT'}
+    ]}]
+  }
+};
+
+function loadTemplate(name){
+  const t = TEMPLATES[name];
+  if(!t) return false;
+  const d = blankDoc();
+  d.title = t.title;
+  d.pageSize = t.pageSize;
+  d.orientation = t.orientation;
+  d.columns = t.columns;
+  d.margins = {...t.margins};
+  d.masterStyles = {...t.masterStyles};
+  d.pages = t.pages.map(p=>({
+    id: 'p'+Math.random().toString(36).slice(2,9),
+    blocks: p.blocks.map(b => ({id:'b'+Math.random().toString(36).slice(2,9), ...b}))
+  }));
+  state.doc = d; state.curPage=0; state.editingBlock=null;
+  renderAll(); saveDoc(true);
+  toast('template loaded: '+name);
+  return true;
+}
+
+// ============ Ω PALETTE ============
+const PAL_TEMPLATES = [
+  {key:'brochure', name:'brochure', desc:'3 pages · 2 columns · A4'},
+  {key:'onepager', name:'one-pager', desc:'single A4 · hero + body + footer'},
+  {key:'report', name:'report', desc:'cover + TOC + body + appendix'},
+  {key:'invoice', name:'invoice', desc:'single page · line-item layout'},
+  {key:'productsheet', name:'product sheet', desc:'image left + spec right'}
+];
+
+function openPalette(){
+  document.getElementById('palette').classList.add('open');
+  const inp = document.getElementById('pInput');
+  inp.value = '';
+  inp.focus();
+  updatePaletteList('');
+  updateTierBadge().then(()=>{
+    const t = document.getElementById('tierBadge').textContent;
+    document.getElementById('pTier').textContent = t;
+  });
+}
+function closePalette(){ document.getElementById('palette').classList.remove('open'); }
+
+function updatePaletteList(q){
+  const ql = q.toLowerCase().trim();
+  let rows = '';
+  const matches = PAL_TEMPLATES.filter(t => !ql || t.key.includes(ql) || t.name.includes(ql) || t.desc.includes(ql));
+  matches.forEach((t,i)=>{
+    rows += `<div class="palette-row ${i===0?'sel':''}" data-cmd="tpl:${t.key}">
+      <span class="ico">◊</span>
+      <div><div>${t.name}</div><div class="desc">${t.desc}</div></div>
+      <span class="key">template</span>
+    </div>`;
+  });
+  // page ops
+  if(!ql || 'add page'.includes(ql) || 'new page'.includes(ql)){
+    rows += `<div class="palette-row" data-cmd="addPage"><span class="ico">+</span><div>add page</div><span class="key">action</span></div>`;
+  }
+  if(!ql || 'duplicate'.includes(ql)){
+    rows += `<div class="palette-row" data-cmd="dupPage"><span class="ico">⎘</span><div>duplicate page</div><span class="key">action</span></div>`;
+  }
+  if(!ql || 'export'.includes(ql) || 'pdf'.includes(ql) || 'print'.includes(ql)){
+    rows += `<div class="palette-row" data-cmd="export"><span class="ico">↓</span><div>export PDF (print)</div><span class="key">action</span></div>`;
+  }
+  // T3 freeform
+  if(ql.length>3 && !matches.length){
+    rows += `<div class="palette-row sel" data-cmd="t3:${escapeHtml(q)}"><span class="ico">Ω</span><div><div>draft with Ω (T3)</div><div class="desc">"${escapeHtml(q)}"</div></div><span class="key">enter</span></div>`;
+  }
+  document.getElementById('pBody').innerHTML = rows;
+  document.querySelectorAll('.palette-row').forEach(r=>{
+    r.addEventListener('click', ()=> runPaletteCmd(r.dataset.cmd));
+  });
+}
+
+async function runPaletteCmd(cmd){
+  if(cmd.startsWith('tpl:')){
+    loadTemplate(cmd.slice(4));
+    closePalette();
+    return;
+  }
+  if(cmd==='addPage'){ addPage(); closePalette(); return; }
+  if(cmd==='dupPage'){ duplicatePage(); closePalette(); return; }
+  if(cmd==='export'){ closePalette(); exportPDF(); return; }
+  if(cmd.startsWith('t3:')){
+    const prompt = cmd.slice(3);
+    closePalette();
+    await draftWithLLM(prompt);
+    return;
+  }
+}
+
+async function draftWithLLM(prompt){
+  toast('drafting...');
+  const sys = `You are FallPage's drafting assistant. Output ONLY valid JSON, no prose, no fences. Schema:
+[{"page":1,"blocks":[{"type":"heading","level":1,"text":"..."},{"type":"paragraph","text":"markdown ok"},{"type":"pullquote","text":"..."},{"type":"divider"},{"type":"spacer","height":10},{"type":"toc"}]}]
+Valid block types: heading (with level 1/2/3 and text), paragraph (text supports markdown), pullquote (text), divider, spacer (height mm), toc, image (skip — user adds).
+Keep it tight. 1-3 pages unless asked for more.`;
+  const res = await Cascade.generate(sys, prompt, 2000);
+  if(!res.text){ toast('no LLM key set'); openModal('settings'); return; }
+  // try to extract JSON
+  let json = res.text.trim();
+  const m = json.match(/\[[\s\S]*\]/);
+  if(m) json = m[0];
+  try{
+    const arr = JSON.parse(json);
+    if(!Array.isArray(arr)) throw new Error('not array');
+    const d = blankDoc();
+    d.title = prompt.slice(0,60);
+    d.pages = arr.map(pg=>({
+      id:'p'+Math.random().toString(36).slice(2,9),
+      blocks: (pg.blocks||[]).map(b=>({id:'b'+Math.random().toString(36).slice(2,9), ...b}))
+    }));
+    if(d.pages.length===0) d.pages = [blankPage()];
+    state.doc = d; state.curPage=0; state.editingBlock=null;
+    renderAll(); saveDoc(true);
+    toast('drafted · '+res.tier);
+  }catch(e){
+    console.error(e, res.text);
+    toast('parse failed · see console');
+  }
+}
+
+// ============ MODALS ============
+function openModal(name){
+  if(name==='load'){ openLoadModal(); return; }
+  if(name==='settings'){ openSettingsModal(); return; }
+}
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+function openSettingsModal(){
+  const s = state.settings;
+  const html = `
+    <h2>Settings</h2>
+    <h3>Ω autopilot keys (T3 · BYOK)</h3>
+    <div class="field"><label>Anthropic key</label><input id="setAnth" value="${escapeHtml(s.anthropicKey)}" placeholder="sk-ant-..."></div>
+    <div class="field"><label>Gemini key (free tier)</label><input id="setGem" value="${escapeHtml(s.geminiKey)}" placeholder="AI..."></div>
+    <div class="field"><label>OpenAI key</label><input id="setOA" value="${escapeHtml(s.openaiKey)}" placeholder="sk-..."></div>
+    <div class="field"><label>OpenRouter key</label><input id="setOR" value="${escapeHtml(s.openrouterKey)}" placeholder="sk-or-..."></div>
+    <h3>About</h3>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--cream-muted);line-height:1.6">
+      FallPage v${VERSION} · prime ${PRIME}<br>
+      The sovereign InDesign wedge<br>
+      Phase 2 of the FallStudio plan<br>
+      Source · MIT · ◊·κ=1<br>
+      Mesh channel · <span style="color:var(--brass)">fall-signal</span>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="closeModal()">cancel</button>
+      <button class="btn primary" onclick="saveSettings()">save</button>
+    </div>`;
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+async function saveSettings(){
+  state.settings.anthropicKey = document.getElementById('setAnth').value.trim();
+  state.settings.geminiKey = document.getElementById('setGem').value.trim();
+  state.settings.openaiKey = document.getElementById('setOA').value.trim();
+  state.settings.openrouterKey = document.getElementById('setOR').value.trim();
+  await dbPut('kv', state.settings, 'settings');
+  Cascade._p = undefined;
+  updateTierBadge();
+  closeModal();
+  toast('settings saved');
+}
+
+// ============ TOAST ============
+let toastTimer=null;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.classList.remove('show'), 1700);
+}
+
+// ============ KEYBOARD ============
+document.addEventListener('keydown', e=>{
+  if((e.ctrlKey||e.metaKey) && e.key==='k'){ e.preventDefault(); openPalette(); }
+  else if((e.ctrlKey||e.metaKey) && e.key==='s'){ e.preventDefault(); saveDoc(); }
+  else if((e.ctrlKey||e.metaKey) && e.key==='e'){ e.preventDefault(); exportPDF(); }
+  else if(e.key==='Escape'){ closePalette(); closeModal(); }
+  else if(document.getElementById('palette').classList.contains('open')){
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      const rows = [...document.querySelectorAll('.palette-row')];
+      let i = rows.findIndex(r=>r.classList.contains('sel'));
+      if(i<0) i=0;
+      rows[i]?.classList.remove('sel');
+      i = e.key==='ArrowDown' ? (i+1)%rows.length : (i-1+rows.length)%rows.length;
+      rows[i]?.classList.add('sel');
+      rows[i]?.scrollIntoView({block:'nearest'});
+    } else if(e.key==='Enter'){
+      e.preventDefault();
+      const sel = document.querySelector('.palette-row.sel');
+      if(sel) runPaletteCmd(sel.dataset.cmd);
+    }
+  }
+});
+document.getElementById('pInput').addEventListener('input', e => updatePaletteList(e.target.value));
+
+window.addEventListener('resize', ()=>{ if(state.doc) renderPreview(); });
+window.addEventListener('beforeunload', e => { if(state.dirty){ saveDoc(true); }});
+
+// ============ KONOMI · FALLMESH · POSTMESSAGE ============
+window.KONOMI={active:true,tier:'sovereign',prime:PRIME,check:()=>({ok:true,tier:'sovereign'})};
+try{const sig=new BroadcastChannel('fall-signal');sig.postMessage({source:'fallpage',type:'hello',prime:PRIME,version:VERSION,ts:Date.now()});sig.addEventListener('message',e=>{const m=e.data;if(m&&m.type==='ping')sig.postMessage({source:'fallpage',type:'pong',prime:PRIME})})}catch(e){}
+window.addEventListener('message',async e=>{
+  const m=e.data;if(!m||m.target!=='fallpage'||!m.action)return;
+  let r=null;
+  if(m.action==='ping') r={ok:true,prime:PRIME,version:VERSION};
+  else if(m.action==='addPage'){ addPage(); r={ok:true,pages:state.doc.pages.length}; }
+  else if(m.action==='getDocJson'){ r={ok:true,doc:state.doc}; }
+  else if(m.action==='loadTemplate'){ const ok=loadTemplate(m.name); r={ok}; }
+  else if(m.action==='exportPdf'){ exportPDF(); r={ok:true}; }
+  e.source?.postMessage({target:m.source||'*',responseTo:m.action,data:r},'*');
+});
+
+// ============ BOOT ============
+(async function boot(){
+  try{
+    state.db = await openDb();
+    await loadLast();
+  }catch(e){
+    console.error(e);
+    state.doc = blankDoc();
+  }
+  if(!state.doc.pages || state.doc.pages.length===0){
+    state.doc = blankDoc();
+    // seed a friendly starter on first launch
+    const p = state.doc.pages[0];
+    p.blocks.push(newBlock('heading',{level:1,text:'FallPage'}));
+    p.blocks.push(newBlock('paragraph',{text:'The sovereign InDesign wedge. **Ctrl+K** for templates · pick a block on the right · **↓ pdf** when ready.'}));
+    p.blocks.push(newBlock('pullquote',{text:'Every line pays rent.'}));
+    p.blocks.push(newBlock('paragraph',{text:'Replace this page with your own content, add more pages on the left, and print.'}));
+  }
+  renderAll();
+  updateTierBadge();
+})();
+</script>
+</body>
+</html>
