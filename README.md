@@ -2,7 +2,7 @@
 
 > The InDesign wedge. Multi-page documents · brochures · reports · invoices · product sheets → printable PDF. Single HTML, no server, no subscription.
 >
-> v1 · prime **457** · MIT · ◊·κ=1
+> v1 · prime **1433** · MIT · ◊·κ=1
 
 **Live:** [sjgant80-hub.github.io/fallpage](https://sjgant80-hub.github.io/fallpage/)
 **Source:** [github.com/sjgant80-hub/fallpage](https://github.com/sjgant80-hub/fallpage)
@@ -91,7 +91,7 @@ Auto-saves on every change. A friendly starter page appears on first launch.
 | **UI** | runs from `file://` |
 | **Compute** | T0 lays out + prints in-browser · T3 your direct API call (Ω drafting only) |
 | **Storage** | IndexedDB for docs + settings · PDF downloads via your browser's print engine |
-| **Mesh** | `BroadcastChannel('fall-signal')` · prime 457 · responds to ping · `postMessage` API: `ping`, `addPage`, `getDocJson`, `loadTemplate`, `exportPdf` |
+| **Mesh** | `BroadcastChannel('fall-signal')` · prime 1433 · responds to ping · `postMessage` API: `ping`, `addPage`, `getDocJson`, `loadTemplate`, `exportPdf` |
 
 ---
 
@@ -167,4 +167,4 @@ Extend `PAGE_SIZES` (`[wMm, hMm]`) and add an `<option>` to `#pgSize`. Orientati
 - The layout engine is CSS — `position:absolute` margin rect + native `column-count` for flow. No measurement library, no JS shim. Print is browser-native.
 - Part of the FallStudio plan — Adobe Creative Cloud, sovereign, one HTML at a time
 
-⚒ Part of the [fall* estate](https://github.com/sjgant80-hub) · prime 457 · ◊·κ=1
+⚒ Part of the [fall* estate](https://github.com/sjgant80-hub) · prime 1433 · ◊·κ=1
