@@ -1,6 +1,6 @@
 # ◊ FallPage · sovereign multi-page layout
 
-> The InDesign wedge. Multi-page documents · brochures · reports · invoices · product sheets → printable PDF. Single HTML, no server, no subscription.
+> The InDesign wedge. Multi-page documents · brochures · reports · invoices · product sheets → printable PDF. Single HTML, no server, not subscription-based.
 >
 > v1 · prime **1433** · MIT · ◊·κ=1
 

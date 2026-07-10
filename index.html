@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>◊ FallPage · sovereign multi-page layout · brochures · reports · invoices · Ω autopilot</title>
-<meta name="description" content="Sovereign InDesign wedge. Multi-page documents · A4 / Letter / Legal / business card · columns · master styles · headers, footers, page numbers · print to PDF. Single HTML, no server, no subscription.">
+<meta name="description" content="Sovereign InDesign wedge. Multi-page documents · A4 / Letter / Legal / business card · columns · master styles · headers, footers, page numbers · print to PDF. Single HTML, no server, not subscription-based.">
 <meta name="prime" content="1433">
 <meta name="theme-color" content="#0b0a0f">
 <link rel="manifest" href='data:application/manifest+json,{"name":"FallPage","short_name":"page","start_url":"./","display":"standalone","background_color":"%230b0a0f","theme_color":"%23ff8c00","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27><rect width=%27192%27 height=%27192%27 fill=%27%230b0a0f%27 rx=%2828%27/><text x=%2796%27 y=%27130%27 font-family=%27Georgia, serif%27 font-size=%27108%27 font-weight=%27700%27 text-anchor=%27middle%27 fill=%27%23ff8c00%27>◊</text></svg>","sizes":"192x192","type":"image/svg+xml"}]}'>
@@ -220,22 +220,19 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
     'llama-3b':  { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',   size: '~2GB',   label: '3B · balanced · default · most laptops' },
     'qwen-7b':   { id: 'Qwen2.5-7B-Instruct-q4f16_1-MLC',     size: '~5GB',   label: '7B · capable · needs decent GPU (M-series Mac / 8GB+ VRAM)' },
     'llama-8b':  { id: 'Llama-3.1-8B-Instruct-q4f16_1-MLC',   size: '~5GB',   label: '8B · common · needs decent GPU' },
-    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' },
-  };
+    'llama-70b': { id: 'Llama-3.1-70B-Instruct-q4f16_1-MLC',  size: '~40GB',  label: '70B · frontier · needs serious GPU + 64GB+ RAM' }};
   const DEFAULT_MODEL = 'llama-3b';
 
   const T3_PROVIDERS = {
     anthropic: { label: 'Anthropic Claude', models: ['claude-sonnet-4-5','claude-opus-4-7','claude-haiku-4-5'], default: 'claude-sonnet-4-5', url: 'https://api.anthropic.com/v1/messages' },
     openai:    { label: 'OpenAI',           models: ['gpt-4o','gpt-4o-mini','o1-mini'],                          default: 'gpt-4o-mini',      url: 'https://api.openai.com/v1/chat/completions' },
-    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' },
-  };
+    google:    { label: 'Google Gemini',    models: ['gemini-1.5-pro','gemini-1.5-flash','gemini-2.0-flash-exp'], default: 'gemini-1.5-flash', url: 'https://generativelanguage.googleapis.com/v1beta/models/' }};
 
   // ─── State ───────────────────────────────────────────────────────
   const STATE = {
     config: loadConfig(),
     ai: { ready: false, loading: false, progress: 0, engine: null, model: null },
-    mesh: { active: false, peers: new Map(), bc: null, signal: null },
-  };
+    mesh: { active: false, peers: new Map(), bc: null, signal: null }};
 
   function loadConfig() {
     try { return JSON.parse(localStorage.getItem('fall-kit.config') || '{}'); }
@@ -302,8 +299,7 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
     if (tier === 'T2' && STATE.ai.ready && STATE.ai.engine) {
       const r = await STATE.ai.engine.chat.completions.create({
         messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }],
-        max_tokens: maxTokens,
-      });
+        max_tokens: maxTokens});
       return r.choices[0].message.content;
     }
     if (tier === 'T3' && STATE.config.api_key && STATE.config.api_provider) {
@@ -320,8 +316,7 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
       const r = await fetch(T3_PROVIDERS.anthropic.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, system: sys, messages: [{ role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('Anthropic ' + r.status + ': ' + (await r.text()).slice(0, 200));
       const j = await r.json();
       return j.content[0].text;
@@ -330,8 +325,7 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
       const r = await fetch(T3_PROVIDERS.openai.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + key },
-        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] }),
-      });
+        body: JSON.stringify({ model, max_tokens: maxTokens, messages: [{ role: 'system', content: sys }, { role: 'user', content: msg }] })});
       if (!r.ok) throw new Error('OpenAI ' + r.status);
       const j = await r.json();
       return j.choices[0].message.content;
@@ -340,8 +334,7 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
       const r = await fetch(T3_PROVIDERS.google.url + model + ':generateContent?key=' + encodeURIComponent(key), {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } }),
-      });
+        body: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: sys + '\n\n---\n\n' + msg }] }], generationConfig: { maxOutputTokens: maxTokens } })});
       if (!r.ok) throw new Error('Google ' + r.status);
       const j = await r.json();
       return j.candidates[0].content.parts[0].text;
@@ -582,8 +575,7 @@ header{display:flex;align-items:center;border-bottom:1px solid var(--line);backg
     openMint: openMint,  // v1.2 · launch kcc-mint with this seed prefilled as parent
     MODELS: WEBLLM_MODELS,
     PROVIDERS: T3_PROVIDERS,
-    state: STATE,
-  };
+    state: STATE};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -855,11 +847,11 @@ function pageDims(d){
 function md2html(s){
   if(!s) return '';
   s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-  s = s.replace(/\*([^*]+)\*/g,'<em>$1</em>');
-  s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2">$1</a>');
-  s = s.split(/\n{2,}/).map(p=>{
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>TBA</strong>');
+  s = s.replace(/\*([^*]+)\*/g,'<em>TBA</em>');
+  s = s.replace(/`([^`]+)`/g,'<code>TBA</code>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="TBA">TBA</a>');
+  s = s.split(/\n{2}/).map(p=>{
     if(/^[-*] /.test(p)){
       const items = p.split('\n').filter(l=>/^[-*] /.test(l)).map(l=>'<li>'+l.replace(/^[-*] /,'')+'</li>').join('');
       return '<ul>'+items+'</ul>';
@@ -1365,8 +1357,7 @@ const TEMPLATES = {
         {type:'paragraph',text:'Continue the narrative across columns. The two-column layout flows naturally — text wraps from one column to the next.'},
         {type:'columns'},
         {type:'heading',level:2,text:'What we make'},
-        {type:'paragraph',text:'Describe your offering. Keep it tight. Two columns punish padding.'},
-      ]},
+        {type:'paragraph',text:'Describe your offering. Keep it tight. Two columns punish padding.'}]},
       {blocks:[
         {type:'heading',level:1,text:'How it works'},
         {type:'paragraph',text:'Walk the reader through your process in plain language.'},
@@ -1374,12 +1365,10 @@ const TEMPLATES = {
         {type:'heading',level:2,text:'Step one'},
         {type:'paragraph',text:'Detail.'},
         {type:'heading',level:2,text:'Step two'},
-        {type:'paragraph',text:'Detail.'},
-      ]},
+        {type:'paragraph',text:'Detail.'}]},
       {blocks:[
         {type:'heading',level:1,text:'Get in touch'},
-        {type:'paragraph',text:'hello@example.com\n+44 0000 000000\nexample.com'},
-      ]}
+        {type:'paragraph',text:'hello@example.com\n+44 0000 000000\nexample.com'}]}
     ]
   },
   onepager: {
@@ -1443,8 +1432,8 @@ const TEMPLATES = {
       {type:'paragraph',text:'**Invoice #** INV-0001 · **Date** 2026-06-16 · **Due** 2026-07-16'},
       {type:'divider'},
       {type:'heading',level:3,text:'Line items'},
-      {type:'paragraph',text:'| Item | Qty | Rate | Total |\n|---|---|---|---|\n| Description of work | 1 | £500 | £500 |\n| Second line item | 4 | £125 | £500 |'},
-      {type:'paragraph',text:'**Subtotal** £1,000\n**VAT (20%)** £200\n**Total due** £1,200'},
+      {type:'paragraph',text:'| Item | Qty | Rate | Total |\n|---|---|---|---|\n| Description of work | 1 | TBA | TBA |\n| Second line item | 4 | TBA | TBA |'},
+      {type:'paragraph',text:'**Subtotal** TBA\n**VAT (20%)** TBA\n**Total due** TBA'},
       {type:'divider'},
       {type:'paragraph',text:'Payable by bank transfer to *Account · Sort 00-00-00 · No. 00000000*. Thank you.'}
     ]}]
@@ -1462,8 +1451,8 @@ const TEMPLATES = {
       {type:'columns'},
       {type:'heading',level:2,text:'Specifications'},
       {type:'paragraph',text:'- Dimension · 000 × 000 mm\n- Weight · 000 g\n- Material · ...\n- Colour · ...\n- Power · ...\n- Warranty · 1 year'},
-      {type:'heading',level:3,text:'Pricing'},
-      {type:'paragraph',text:'**£000** · ex VAT'}
+      {type:'heading',level:3,text:'Access'},
+      {type:'paragraph',text:'**TBA** · ex VAT'}
     ]}]
   }
 };
