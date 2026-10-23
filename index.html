@@ -1391,11 +1391,11 @@ function pageDims(d){
 function md2html(s){
   if(!s) return '';
   s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>TBA</strong>');
-  s = s.replace(/\*([^*]+)\*/g,'<em>TBA</em>');
-  s = s.replace(/`([^`]+)`/g,'<code>TBA</code>');
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="TBA">TBA</a>');
-  s = s.split(/\n{2}/).map(p=>{
+  s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+  s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2">$1</a>');
+  s = s.split(/\n{2,}/).map(p=>{
     if(/^[-*] /.test(p)){
       const items = p.split('\n').filter(l=>/^[-*] /.test(l)).map(l=>'<li>'+l.replace(/^[-*] /,'')+'</li>').join('');
       return '<ul>'+items+'</ul>';
